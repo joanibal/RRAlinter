@@ -1,0 +1,21 @@
+## Capitalization
+# Only the Capitalization tag matches case-sensitively
+\\(?:sub)*section\{[a-z].*?\}                                              % Capitalization: Section titles should be capitalized
+\\(?:sub)+section\{\w[^}]*?[^:]\b(?:With|A|An|Is|And|For|To|The)\b[^}]*?\} % Capitalization: Some words should't be capitalized in section titles
+section~\\ref                                                              % Capitalization: capitalize section when saying Section X.
+
+# proper names
+newton                                                                     % Capitalization: Capitalize the name Newton
+jacobian                                                                   % Capitalization: Capitalize the name Jacobian
+euclidean                                                                  % Capitalization: Capitalize the name Euclidean
+linux                                                                      % Capitalization: Capitalize Linux
+python                                                                     % Capitalization: Capitalize Python
+
+## lab codes 
+adflow                                                                     % Capitalization: Its ADflow
+Adflow                                                                     % Capitalization: Its ADflow
+ADFlow                                                                     % Capitalization: Its ADflow
+ADFLOW                                                                     % Capitalization: Its ADflow
+TACs                                                                       % Capitalization: Its TACS
+Tacs                                                                       % Capitalization: Its TACS
+tacs                                                                       % Capitalization: Its TACS
