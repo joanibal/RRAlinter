@@ -1,0 +1,13 @@
+*.pdf
+*.bbl
+*.blg
+*.toc
+*.log
+*.out
+*.synctex.gz
+*.synctex.gz.sig
+*.aux
+*.fdb_latexmk
+*.fls
+
+*.egg-info
