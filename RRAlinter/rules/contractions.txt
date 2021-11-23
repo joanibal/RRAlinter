@@ -1,0 +1,14 @@
+# contractions should not be used
+ain't                                                                                       % Contraction: also not a word
+
+# I, you, he, she, it , we , they , that , who, what , when , where, why, how contractions
+I'm                                                                                         % Contraction
+(?:i|you|he|she|it|we|they|that|who|what|where|when|why|how)'ll                             % Contraction
+(?:i|you|he|she|it|we|they|that|who|what|where|when|why|how)'d                              % Contraction
+(?:i|you|we|they)'ve                                                                        % Contraction
+(?:you|we|they|what)'re                                                                     % Contraction 
+(?:he|she|it|that|who|what|where|when|why|how)'s                                            % Contraction 
+
+# verb contractions
+(?:is|are|was|were|have|has|had|wo|would|do|does|did|ca|could|should|might|must)n't         % Contraction
+(?:would|should|could|might|must)'ve                                                        % Contraction

@@ -1,0 +1,2 @@
+# syntax for math notation
+_[a-z][a-z]                         % Math Syntax: used \text{} for subscripts with more that one letter

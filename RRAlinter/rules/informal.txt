@@ -1,0 +1,2 @@
+# remove informal words and phrases from your writing
+and//or                         % Informal: use x, y, or both. 

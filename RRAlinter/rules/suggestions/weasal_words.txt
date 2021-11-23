@@ -1,0 +1,27 @@
+#Avoid “weasel words”: These are words that do not convey information and are not precise.
+many                                              % Weasel Word
+various                                           % Weasel Word
+very                                              % Weasel Word
+fairly                                            % Weasel Word
+several                                           % Weasel Word
+extremely                                         % Weasel Word
+exceedingly                                       % Weasel Word
+quite                                             % Weasel Word
+remarkably                                        % Weasel Word
+few                                               % Weasel Word
+surprisingly                                      % Weasel Word
+mostly                                            % Weasel Word
+largely                                           % Weasel Word
+huge                                              % Weasel Word
+tiny                                              % Weasel Word
+(?:are|is)\sa\snumber                             % Weasel Word
+excellent                                         % Weasel Word
+interestingly                                     % Weasel Word
+significantly                                     % Weasel Word
+substantially                                     % Weasel Word
+clearly                                           % Weasel Word
+vast                                              % Weasel Word
+relatively                                        % Weasel Word
+completely                                        % Weasel Word
+about                                             % Weasel Word: replace with number if possible
+approximately                                     % Weasel Word: replace with number if possible
