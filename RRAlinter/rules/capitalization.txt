@@ -12,10 +12,5 @@ linux                                                                      % Cap
 python                                                                     % Capitalization: Capitalize Python
 
 ## lab codes 
-adflow                                                                     % Capitalization: Its ADflow
-Adflow                                                                     % Capitalization: Its ADflow
-ADFlow                                                                     % Capitalization: Its ADflow
-ADFLOW                                                                     % Capitalization: Its ADflow
-TACs                                                                       % Capitalization: Its TACS
-Tacs                                                                       % Capitalization: Its TACS
-tacs                                                                       % Capitalization: Its TACS
+(?:adflow|Adflow|ADFlow|ADFLOW|adFlow)                                     % Capitalization: Its ADflow
+(?:TACs|Tacs|tacs)                                                         % Capitalization: Its TACS

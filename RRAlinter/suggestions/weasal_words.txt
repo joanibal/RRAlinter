@@ -23,5 +23,3 @@ clearly                                           % Weasel Word
 vast                                              % Weasel Word
 relatively                                        % Weasel Word
 completely                                        % Weasel Word
-about                                             % Weasel Word: replace with number if possible
-approximately                                     % Weasel Word: replace with number if possible

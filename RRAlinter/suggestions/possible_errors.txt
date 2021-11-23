@@ -1,0 +1,2 @@
+# thing that aren't necessarily wrong but often are. 
+(?<!to)(?<!at)(?<!in)(?<!,)\swhich                             % Possible Error: May need a comma between which and noun or should be that

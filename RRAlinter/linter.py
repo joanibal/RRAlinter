@@ -75,22 +75,26 @@ def read_rules() -> List[str]:
     # find rule set directory(ies) in the arguments
     # rules_dirs = [i for i, arg in enumerate(sys.argv) if ['-r', '--rules'].__contains__(arg)]
     rules_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rules')
+    suggestions_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'suggestions')
 
     rule_set_files = get_all_files(rules_dir)
+    suggestions_set_files = get_all_files(suggestions_dir)
 
     rules_list = []
-    for file in rule_set_files:
-        f = open(file, 'r')
-        for line in f:
-            # raw_line = fr'{line.strip()}'
-            line = line.strip()
-            if line.startswith('#') or len(line) == 0:
-                continue
-            
-            # raw_line = repr(line)
-            # print(raw_line)
-            rules_list.append(line)
-            # pprint(rules_list)
+    
+    for file_set in [rule_set_files, suggestions_set_files]:
+        for file in file_set:
+            f = open(file, 'r')
+            for line in f:
+                # raw_line = fr'{line.strip()}'
+                line = line.strip()
+                if line.startswith('#') or len(line) == 0:
+                    continue
+                
+                # raw_line = repr(line)
+                # print(raw_line)
+                rules_list.append(line)
+                # pprint(rules_list)
     
     return rules_list
 
@@ -135,7 +139,12 @@ def parse_rules(rule_list: List[str]) -> (Dict[Pattern, str], List[str]):
             surrounding_term = surrounding_terms.get(reasoning.split(':')[0].strip(), '')
             case_sensitivity = case_sensitivity_mapping.get(reasoning.split(':')[0].strip(),
                                                             re.IGNORECASE) + re.UNICODE + re.MULTILINE
-            regex = re.compile(surrounding_term + rule_str.replace(' ', r'\s') + surrounding_term, case_sensitivity)
+            rule_str = rule_str.replace(' ', r'\s')
+            try:
+                regex = re.compile(surrounding_term + rule_str + surrounding_term, case_sensitivity)
+            except re.error as e:
+                print("The following rule could not be compiled to a valid regex: %s" % rule_line, file=sys.stderr)
+                continue
             rule_mapping[regex] = reasoning
             pass
     

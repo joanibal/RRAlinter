@@ -8,9 +8,10 @@
 [^~]\\cite[^t]                                     % Syntax: add ~ to prevent a line break before the number
 [^~]\\ref                                          % Syntax: add ~ to prevent a line break before the number
 
-\\etal{                                            % Syntax: use \citet{} to add the Author names
-\\etal[^{]                                         % Syntax: use \citet{} to add the Author names
-et al                                              % Syntax: use \citet{} to add the Author names 
+(?:\\etal{|\\etal[^{]|et\sal)                                            % Syntax: use \citet{} to add the Author names
 
+[\d.][Ee][-\d]                                          % Syntax: use \times 10^x instead of 1ex or 1Ex
+[xyz]-axis                                         % Syntax: use the math symbol. e.g. x-axis → the $x$-axis
 
-[Ee][-\d]                                          % Syntax: use \times 10^x instead of 1ex or 1Ex
+(?:\\\(\\frac{|$\\frac{)                                            % Syntax: Do not use \frac{} inline. 
+(?:Navier-Stokes|Gauss-Seidel|Newton-Krylov)                       % Syntax: use -- to get the right dash
