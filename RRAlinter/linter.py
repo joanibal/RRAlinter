@@ -6,10 +6,10 @@ import os
 from os import listdir
 from os.path import isfile, join, isdir, expanduser
 from typing import List, Dict, Tuple
-
+from pprint import pprint
 Pattern = type(re.compile('', 0))
 Match = type(re.match(r'\s', ' '))
-default_commands = r"begin|bibliography|cite|documentclass|end|figure|includegraphics|input|label|newcommand|table" \
+default_commands = r"begin|bibliography|documentclass|end|figure|includegraphics|input|label|newcommand|table" \
                    r"|texttt|todo|(auto)?ref"
 
 def main():
@@ -82,7 +82,15 @@ def read_rules() -> List[str]:
     for file in rule_set_files:
         f = open(file, 'r')
         for line in f:
-            rules_list.append(line.strip())
+            # raw_line = fr'{line.strip()}'
+            line = line.strip()
+            if line.startswith('#') or len(line) == 0:
+                continue
+            
+            # raw_line = repr(line)
+            # print(raw_line)
+            rules_list.append(line)
+            # pprint(rules_list)
     
     return rules_list
 
@@ -110,7 +118,6 @@ def parse_rules(rule_list: List[str]) -> (Dict[Pattern, str], List[str]):
         'Capitalization': 0,
     }
     
-    
     for rule_line in rule_list:
         if rule_line.startswith('#') or len(rule_line) == 0:
             continue
@@ -124,11 +131,13 @@ def parse_rules(rule_list: List[str]) -> (Dict[Pattern, str], List[str]):
         if reasoning == 'ignoredCommand':
             commands_to_ignore.append(rule_str)
         else:
+            
             surrounding_term = surrounding_terms.get(reasoning.split(':')[0].strip(), '')
             case_sensitivity = case_sensitivity_mapping.get(reasoning.split(':')[0].strip(),
                                                             re.IGNORECASE) + re.UNICODE + re.MULTILINE
             regex = re.compile(surrounding_term + rule_str.replace(' ', r'\s') + surrounding_term, case_sensitivity)
             rule_mapping[regex] = reasoning
+            pass
     
     
     return rule_mapping, commands_to_ignore
@@ -172,6 +181,7 @@ def test_line(line_to_test: str, rule_patterns: Dict[Pattern, str]) \
     rules_broken = []
     for rule in rule_patterns:
         match = rule.search(line_to_test)
+    
         if match is not None:
             rules_broken.append((rule, match))
     return rules_broken

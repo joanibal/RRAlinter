@@ -1,18 +1,16 @@
 ## Syntax Errors
-<<<<<<<\s.                                         % Syntax: Unresolved CVS conflict!
-=======                                            % Syntax: Unresolved CVS conflict!
->>>>>>>\s.                                         % Syntax: Unresolved CVS conflict!
-\\caption\[.*?CCDF.*?\]                            % Syntax: short caption should not include graph type.
-\\caption\[.*?CDF.*?\]                             % Syntax: short caption should not include graph type.
-\\caption\[.{0,20}\]                               % Syntax: short caption should not be too short.
-\\caption\[[^\]]*[^\.]\]                           % Syntax: short caption should end with a period.
-\\etal[^{]                                         % Syntax: it's good practice to use \etal{} to avoid bad spacing
-\\url\{(?!http|ftp|rtsp|mailto)                    % Syntax: URLs should include a protocol (e.g. https://)
-[^{](?:cl|la|sl|pc)s?\b                            % Syntax: Use the glossary command for proper linking and abbreviation
-[^\\](?:e\.?g\.?|i\.?e\.?|e\.?t\.?c\.?|c\.?f\.?)\b % Syntax: Use the consistency commands
-[^{]course\sleaders?                               % Syntax: Use the glossary command for proper linking and abbreviation
-[^{]learning\sassistants?                          % Syntax: Use the glossary command for proper linking and abbreviation
-[^{]program\scommittee                             % Syntax: Use the glossary command for proper linking and abbreviation
-\bsenior\sleaders?                                 % Syntax: Use the glossary command for proper linking and abbreviation
-\{\\em\s+[^\}]*?[:\.,]\}                           % Syntax: Punctuation at the edges of italic text is not italicized
-#cf\.[^\\]                                          % Syntax: cf. should get an escaped space "\ "
+#\\caption\[.*?CCDF.*?\]                            % Syntax: short caption should not include graph type.
+#\\caption\[.*?CDF.*?\]                             % Syntax: short caption should not include graph type.
+#\\caption\[.{0,20}\]                               % Syntax: short caption should not be too short.
+#\\caption\[[^\]]*[^\.]\]                           % Syntax: short caption should end with a period.
+
+
+[^~]\\cite[^t]                                     % Syntax: add ~ to prevent a line break before the number
+[^~]\\ref                                          % Syntax: add ~ to prevent a line break before the number
+
+\\etal{                                            % Syntax: use \citet{} to add the Author names
+\\etal[^{]                                         % Syntax: use \citet{} to add the Author names
+et al                                              % Syntax: use \citet{} to add the Author names 
+
+
+[Ee][-\d]                                          % Syntax: use \times 10^x instead of 1ex or 1Ex
