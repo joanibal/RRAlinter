@@ -18,6 +18,8 @@ def main():
     """
     parser = argparse.ArgumentParser(prog="RRAlint")
     parser.add_argument("tex_file", help="Name of input .tex file")
+    parser.add_argument("--no-color", default=False, action="store_true", help="Disable color output")
+    parser.add_argument("--cntxt-char", default=10, type=int, help="Number of characters to show before and after a match")
     args = parser.parse_args()
 
 
@@ -37,7 +39,7 @@ def main():
     
     latex_lines = read_latex(args.tex_file)
 
-    rules_broken_report = process_files(latex_lines, rules, command_regex)
+    rules_broken_report = process_files(latex_lines, rules, command_regex, num_context_char=args.cntxt_char, coloring=(not args.no_color))
     for rule_reported in rules_broken_report:
         print(rule_reported, file=sys.stderr)
     
@@ -235,7 +237,7 @@ def remove_math(latex: Dict[str, List[str]]):
 
 
 def process_files(file_lines: Dict[str, List[str]], rule_patterns: Dict[Pattern, str],
-                  ignored_command_regex: Pattern) -> List[str]:
+                  ignored_command_regex: Pattern, num_context_char=10, coloring=True) -> List[str]:
     """
     Takes all the lines that need to be checked, removes any math blocks and commands, then checks them for broken
         rules (including those that span multiple lines)
@@ -255,25 +257,42 @@ def process_files(file_lines: Dict[str, List[str]], rule_patterns: Dict[Pattern,
         format_length = str(floor(log10(len(file)) + 1))
         rules_broken = dict()
         for i in range(len(file)):
-            first_line = remove_commands(file[i], ignored_command_regex)
-            if first_line == '':
+            # first_line = remove_commands(file[i], ignored_command_regex)
+            line = remove_commands(file[i], ignored_command_regex)
+            if line == '':
                 continue
-            second_line = remove_commands('' if i == (len(file) - 1) else '\n' + file[i + 1].strip(),
-                                          ignored_command_regex)
-            combined_line = first_line + second_line
-            rule_broken_on_line = test_line(combined_line, rule_patterns)
+            # second_line = remove_commands('' if i == (len(file) - 1) else '\n' + file[i + 1].strip(),
+                                        #   ignored_command_regex)
+            # combined_line = first_line + second_line
+            rule_broken_on_line = test_line(line, rule_patterns)
             for rule_broken, error in rule_broken_on_line:
-                try:
-                    line_break_index = combined_line.index('\n')
-                except ValueError:
-                    line_break_index = len(combined_line)
-                error_line = i + 1 if error.span()[0] < line_break_index else i + 2
+                # print(rule_broken, error)
+                # import pdb; pdb.set_trace()
+                # try:
+                    # line_break_index = combined_line.index('\n')
+                # except ValueError:
+                line_break_index = len(line)
+                # error_line = i + 1 if error.span()[0] < line_break_index else i + 2
+                error_line = i + 1
                 if error != '' and (len(errors) == 0 or not rules_broken.get(error_line, []).__contains__(rule_broken)):
-                    error_string = combined_line[max(0, min(line_break_index, error.span()[0] - 5)):
-                                                 min(len(combined_line), error.span()[1] + 5)].strip().replace('\n',
-                                                                                                               ' ')
-                    errors.append(("%s:%0" + format_length + "d:(%s) - %s") %
-                                  (file_name, error_line, error_string, rule_patterns[rule_broken]))
+                    
+                    error_beg = error.span()[0]
+                    error_end = error.span()[1]
+                    context_beg = max(0, error_beg - num_context_char)
+                    context_end = min(len(line), error_end + num_context_char)
+                    
+                    error_str = line[error_beg:error_end]
+                    
+                    context_before = line[context_beg:error_beg]
+                    context_after = line[error_end:context_end]
+                    
+                    if coloring:
+                        error_str = '\033[1;31m' + error_str + '\033[0m'
+                                        
+                    full_error_str = (context_before + error_str + context_after).strip().replace('\n',' ')
+                                                                                                               
+                    errors.append(("%s:%0" + format_length + "d:%0d:(%s) - %s") %
+                                  (file_name, error_line, error_beg+1, full_error_str, rule_patterns[rule_broken]))
                     rules_broken_list = rules_broken.get(error_line, [])
                     if rules_broken_list:
                         rules_broken_list.append(rule_broken)

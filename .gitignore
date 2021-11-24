@@ -11,3 +11,5 @@
 *.fls
 
 *.egg-info
+
+*.pyc

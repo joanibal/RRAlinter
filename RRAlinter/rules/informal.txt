@@ -1,2 +1,18 @@
 # remove informal words and phrases from your writing
-and//or                         % Informal: use x, y, or both. 
+and//or                         % Informal: use x, y, or both.
+tackles?                        % Informal: Should be "solve or address"
+kinda                           % Informal: Should be "kind of"
+
+ain't                                                                                       % Informal: remove contraction also not a word
+
+# I, you, he, she, it , we , they , that , who, what , when , where, why, how contractions
+I'm                                                                                         % Informal: remove Contraction
+(?:i|you|he|she|it|we|they|that|who|what|where|when|why|how)'ll                             % Informal: remove Contraction
+(?:i|you|he|she|it|we|they|that|who|what|where|when|why|how)'d                              % Informal: remove Contraction
+(?:i|you|we|they)'ve                                                                        % Informal: remove Contraction
+(?:you|we|they|what)'re                                                                     % Informal: remove Contraction 
+(?:he|she|it|that|who|what|where|when|why|how)'s                                            % Informal: remove Contraction 
+
+# verb contractions
+(?:is|are|was|were|have|has|had|wo|would|do|does|did|ca|could|should|might|must)n't         % Informal: remove Contraction
+(?:would|should|could|might|must)'ve                                                        % Informal: remove Contraction

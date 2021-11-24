@@ -6,5 +6,7 @@ aero-thermal                                                               % Spe
 ## common misspellings
 foot print                                                                 % Spelling: Should be footprint
 develope                                                                   % Spelling: Should be develop
+further\smore                                                                  % Phrasing: Should be "furthermore"
 
 
+e-mail                                                                         % Phrasing: Should be "email"

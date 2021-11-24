@@ -19,7 +19,9 @@ excellent                                         % Weasel Word
 interestingly                                     % Weasel Word
 significantly                                     % Weasel Word
 substantially                                     % Weasel Word
-clearly                                           % Weasel Word
 vast                                              % Weasel Word
 relatively                                        % Weasel Word
 completely                                        % Weasel Word
+some\skind                                        % Weasel Word: Too vague
+stuff                                             % Weasel Word: Too vague
+things                                            % Weasel Word: Too vague

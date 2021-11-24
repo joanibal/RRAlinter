@@ -1,5 +1,17 @@
 # grammar rules 
 (?:However|Therefore|Furthermore)[^,]           % Grammar: comma needed after introductory word
 (?<!and )thus[^,]                               % Grammar: add comma after intro word "thus" or a "and" before connecting indep. clauses "thus"
-\the\sthe\s                                         % Grammar: remove second "the"
+the the\s                                          % Grammar: remove second "the"
+can not                                          % Grammar: Should be "cannot"
+comprise[ds] of                                                               % Grammar: Should be "composed of"
+includ(?:es|ing)[^\.]*?etc.?                                                 % Grammar: Including implies an incomplete list, so don't double up with an etc.
+including:                  % Grammar: Including leads directly into lists without semi-colons. Semi-colon lists should come after nouns
+lead to                                 % Grammar: Should be "leads to" or "led to"
+literally like                                                                % Grammar: Literally means not a simile
+loosing                                                                        % Grammar: Should be "losing", use "loosening" otherwise.
+loss off                                                                      % Grammar: Should be "loss of"
+safe guard                                                                    % Grammar: Should be "safeguard"
+thusly                                                                         % Grammar: Should be "thus"
+firstly                                                                        % Grammar: Should be "first"
+
 
