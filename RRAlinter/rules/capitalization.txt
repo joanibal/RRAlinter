@@ -5,11 +5,17 @@
 section~\\ref                                                              % Capitalization: capitalize section when saying Section X.
 
 # proper names
-newton                                                                     % Capitalization: Capitalize the name Newton
-jacobian                                                                   % Capitalization: Capitalize the name Jacobian
-euclidean                                                                  % Capitalization: Capitalize the name Euclidean
 linux                                                                      % Capitalization: Capitalize Linux
 python                                                                     % Capitalization: Capitalize Python
+newton                                                                     % Capitalization: Capitalize the name Newton (except when used as unit)
+jacobi                                                                     % Capitalization: Capitalize the name Jacobi
+gauss                                                                      % Capitalization: Capitalize the name Gauss
+riemann                                                                    % Capitalization: Capitalize the name Riemann
+newtonian                                                                  % Capitalization: Capitalize Newtonian
+jacobian                                                                   % Capitalization: Capitalize Jacobian
+euclidean                                                                  % Capitalization: Capitalize Euclidean
+eulerian                                                                   % Capitalization: Capitalize Eulerian
+lagrangian                                                                 % Capitalization: Capitalize Lagrangian
 
 ## lab codes 
 (?:adflow|Adflow|ADFlow|ADFLOW|adFlow)                                     % Capitalization: Its ADflow

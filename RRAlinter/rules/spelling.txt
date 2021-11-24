@@ -3,4 +3,8 @@ aero-structural                                                            % Spe
 aero-propulsive                                                            % Spelling: Its aeropropulsive 
 aero-thermal                                                               % Spelling: Its aerothermal 
 
+## common misspellings
+foot print                                                                 % Spelling: Should be footprint
+develope                                                                   % Spelling: Should be develop
+
 

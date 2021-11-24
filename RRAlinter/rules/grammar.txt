@@ -1,1 +1,5 @@
 # grammar rules 
+(?:However|Therefore|Furthermore)[^,]           % Grammar: comma needed after introductory word
+(?<!and )thus[^,]                               % Grammar: add comma after intro word "thus" or a "and" before connecting indep. clauses "thus"
+\the\sthe\s                                         % Grammar: remove second "the"
+
