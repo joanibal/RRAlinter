@@ -1,6 +1,6 @@
 # phrases that are associated with verbose language
 # of the                       % Verbose: instead of "x of the y" try "y x" or "y's x"
-can do                         % Verbose: replace "can do" with "does"
+# can do                         % Verbose: replace "can do" with "does"
 # can be                       % Verbose: replace "can be" with "is"
 in order to                    % Verbose: replace "in order to" with "to"
 makes use of                   % Verbose: replace "makes use of" with "uses"

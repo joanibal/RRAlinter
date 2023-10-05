@@ -5,5 +5,6 @@ insure                      % Possible Wrong Word: likely should be "ensure"
 (?<!to)(?<!at)(?<!in)(?<!,)\swhich           % Possible Wrong Word: May need a comma between which and noun or should be that
 trivial                     % Possible Wrong Word: likely should be "easy". trivial means not important 
 calculates?                 % Possible Wrong Word: likely should be "compute(s)". "Caclulate(s)" refers to arithmetic. 
+drop                 % Possible Wrong Word: likely should be "decrease(s)".
 
 

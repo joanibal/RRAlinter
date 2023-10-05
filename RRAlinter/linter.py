@@ -20,12 +20,13 @@ def main():
     parser.add_argument("tex_file", help="Name of input .tex file")
     parser.add_argument("--no-color", default=False, action="store_true", help="Disable color output")
     parser.add_argument("--cntxt-char", default=10, type=int, help="Number of characters to show before and after a match")
+    parser.add_argument("--no-suggestions",  default=False, action="store_true", help="Disables the suggestions")
     args = parser.parse_args()
 
-
     # Read in the rules
-    rules_list = read_rules()
+    rules_list, suggestions_list = read_rules()
     rules, ignored_commands = parse_rules(rules_list)
+    suggestions, ignored_commands = parse_rules(suggestions_list)
     
     # There must be some rules
     if len(rules) == 0:
@@ -39,11 +40,24 @@ def main():
     
     latex_lines = read_latex(args.tex_file)
 
-    rules_broken_report = process_files(latex_lines, rules, command_regex, num_context_char=args.cntxt_char, coloring=(not args.no_color))
-    for rule_reported in rules_broken_report:
-        print(rule_reported, file=sys.stderr)
+    errors, warnings = process_files(latex_lines, rules, suggestions, command_regex, num_context_char=args.cntxt_char, coloring=(not args.no_color))
     
-    exit(len(rules_broken_report))
+    if len(errors) > 0:
+        # print the header
+        print("Errors", file=sys.stderr)
+    for rule in errors:
+        print(rule, file=sys.stderr)
+    
+    if not args.no_suggestions:
+        if len(warnings) > 0:
+            if len(errors) > 0:
+                print("") # add a break between the two categories
+            # print the header
+            print("Warnings", file=sys.stderr)
+        for rule in warnings:
+            print(rule, file=sys.stderr)
+    
+    exit(len(errors))
 
 
 def get_all_files(directory: str) -> List[str]:
@@ -83,22 +97,38 @@ def read_rules() -> List[str]:
     suggestions_set_files = get_all_files(suggestions_dir)
 
     rules_list = []
+    suggestions_list = []
     
-    for file_set in [rule_set_files, suggestions_set_files]:
-        for file in file_set:
-            f = open(file, 'r')
-            for line in f:
-                # raw_line = fr'{line.strip()}'
-                line = line.strip()
-                if line.startswith('#') or len(line) == 0:
-                    continue
-                
-                # raw_line = repr(line)
-                # print(raw_line)
-                rules_list.append(line)
-                # pprint(rules_list)
+    for file in rule_set_files:
+        f = open(file, 'r')
+        for line in f:
+            # raw_line = fr'{line.strip()}'
+            line = line.strip()
+            if line.startswith('#') or len(line) == 0:
+                continue
+            
+            # raw_line = repr(line)
+            # print(raw_line)
+            rules_list.append(line)
+            # pprint(rules_list)
     
-    return rules_list
+    
+    for file in suggestions_set_files:
+        f = open(file, 'r')
+        for line in f:
+            # raw_line = fr'{line.strip()}'
+            line = line.strip()
+            if line.startswith('#') or len(line) == 0:
+                continue
+            
+            # raw_line = repr(line)
+            # print(raw_line)
+            suggestions_list.append(line)
+            # pprint(rules_list)
+    
+    
+    
+    return rules_list, suggestions_list
 
 
 def parse_rules(rule_list: List[str]) -> (Dict[Pattern, str], List[str]):
@@ -236,7 +266,7 @@ def remove_math(latex: Dict[str, List[str]]):
     return latex
 
 
-def process_files(file_lines: Dict[str, List[str]], rule_patterns: Dict[Pattern, str],
+def process_files(file_lines: Dict[str, List[str]], error_patterns: Dict[Pattern, str], suggestion_patterns: Dict[Pattern, str],
                   ignored_command_regex: Pattern, num_context_char=10, coloring=True) -> List[str]:
     """
     Takes all the lines that need to be checked, removes any math blocks and commands, then checks them for broken
@@ -245,6 +275,8 @@ def process_files(file_lines: Dict[str, List[str]], rule_patterns: Dict[Pattern,
         A mapping of file names onto a list of that file's lines
     :param rule_patterns: Dict[Pattern, str]
         A dictionary mapping the list of RegEx patterns onto their reasoning strings
+    :param suggestions_patterns: Dict[Pattern, str]
+        A dictionary mapping the list of RegEx patterns onto their reasoning strings
     :param ignored_command_regex:
         The pattern compiled of all the commands to ignore
     :rtype: List[str]
@@ -252,6 +284,46 @@ def process_files(file_lines: Dict[str, List[str]], rule_patterns: Dict[Pattern,
     """
     remove_math(file_lines)
     errors = []
+    warnings = []
+    
+    def save_broken_rules(rule_broken_on_line, rule_patterns, error_list, line_num):
+        
+        error_line = line_num + 1
+        for rule_broken, error in rule_broken_on_line:
+            # print(rule_broken, error)
+            # import pdb; pdb.set_trace()
+            # try:
+                # line_break_index = combined_line.index('\n')
+            # except ValueError:
+            # line_break_index = len(line)
+            # error_line = i + 1 if error.span()[0] < line_break_index else i + 2
+            if error != '' and (len(errors) == 0 or not rules_broken.get(error_line, []).__contains__(rule_broken)):
+                
+                error_beg = error.span()[0]
+                error_end = error.span()[1]
+                context_beg = max(0, error_beg - num_context_char)
+                context_end = min(len(line), error_end + num_context_char)
+                
+                error_str = line[error_beg:error_end]
+                
+                context_before = line[context_beg:error_beg]
+                context_after = line[error_end:context_end]
+                
+                if coloring:
+                    error_str = '\033[1;31m' + error_str + '\033[0m'
+                                    
+                full_error_str = (context_before + error_str + context_after).strip().replace('\n',' ')
+                                                                                                            
+                # error_list.append(("  %s:%0" + format_length + "d:%0d (%s) - %s") %
+                #                 (file_name, error_line, error_beg+1, full_error_str, rule_patterns[rule_broken]))
+                error_list.append(f"  {file_name}" + format_length + f"{error_line}:{error_beg+1:0d} ({full_error_str}) - {rule_patterns[rule_broken]}")
+                # rules_broken_list = rules_broken.get(error_line, [])
+                # if rules_broken_list:
+                #     rules_broken_list.append(rule_broken)
+                # else:
+                #     rules_broken[error_line] = [rule_broken]    
+
+    
     for file_name in file_lines:
         file = file_lines[file_name]
         format_length = str(floor(log10(len(file)) + 1))
@@ -264,41 +336,14 @@ def process_files(file_lines: Dict[str, List[str]], rule_patterns: Dict[Pattern,
             # second_line = remove_commands('' if i == (len(file) - 1) else '\n' + file[i + 1].strip(),
                                         #   ignored_command_regex)
             # combined_line = first_line + second_line
-            rule_broken_on_line = test_line(line, rule_patterns)
-            for rule_broken, error in rule_broken_on_line:
-                # print(rule_broken, error)
-                # import pdb; pdb.set_trace()
-                # try:
-                    # line_break_index = combined_line.index('\n')
-                # except ValueError:
-                line_break_index = len(line)
-                # error_line = i + 1 if error.span()[0] < line_break_index else i + 2
-                error_line = i + 1
-                if error != '' and (len(errors) == 0 or not rules_broken.get(error_line, []).__contains__(rule_broken)):
-                    
-                    error_beg = error.span()[0]
-                    error_end = error.span()[1]
-                    context_beg = max(0, error_beg - num_context_char)
-                    context_end = min(len(line), error_end + num_context_char)
-                    
-                    error_str = line[error_beg:error_end]
-                    
-                    context_before = line[context_beg:error_beg]
-                    context_after = line[error_end:context_end]
-                    
-                    if coloring:
-                        error_str = '\033[1;31m' + error_str + '\033[0m'
-                                        
-                    full_error_str = (context_before + error_str + context_after).strip().replace('\n',' ')
-                                                                                                               
-                    errors.append(("%s:%0" + format_length + "d:%0d:(%s) - %s") %
-                                  (file_name, error_line, error_beg+1, full_error_str, rule_patterns[rule_broken]))
-                    rules_broken_list = rules_broken.get(error_line, [])
-                    if rules_broken_list:
-                        rules_broken_list.append(rule_broken)
-                    else:
-                        rules_broken[error_line] = [rule_broken]
-    return errors
+            rule_broken_on_line = test_line(line, error_patterns)
+            save_broken_rules(rule_broken_on_line, error_patterns, errors, i)
+            suggestion_broken_on_line = test_line(line, suggestion_patterns)
+            save_broken_rules(suggestion_broken_on_line, suggestion_patterns, warnings, i)
+            
+            
+            
+    return errors, warnings
 
 
 def compile_command(commands: List[str]) -> Pattern:
