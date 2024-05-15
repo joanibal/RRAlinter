@@ -8,64 +8,66 @@ it should be noted             % Verbose: replace "It should be noted" with "not
 as can be seen in              % Verbose: replace "As can be seen in" with "As shown in"
 
 # simpler word
-necessitate[ds]?                                                               % Verbose: Should be "require"
-#utilize[ds]?                                                                  % Verbose: Should be "use(s/d)"
-effectuate                                                                     % Verbose: Should be "cause"
-not able                                                                      % Verbose: Should be "unable"
-not be able                                                                  % Verbose: Should be "be unable"
-have to                                                                       % Verbose: Should be "must"
-shortly                                                                        % Verbose: Should be "soon"
-excepting                                                                      % Verbose: Should be "except"
+necessitate[ds]?               % Verbose: Should be "require"
+#utilize[ds]?                  % Verbose: Should be "use(s/d)"
+effectuate                     % Verbose: Should be "cause"
+not able                       % Verbose: Should be "unable"
+not be able                    % Verbose: Should be "be unable"
+have to                        % Verbose: Should be "must"
+shortly                        % Verbose: Should be "soon"
+excepting                      % Verbose: Should be "except"
 
 
 # Wordy
-consensus of opinion                                                         % Verbose: Should be "consensus"
-considerable amount of                                                       % Verbose: Should be "much"
-considerable number of                                                       % Verbose: Should be "many"
-count the number of                                                         % Verbose: Should be "count"
-decreased amount of                                                          % Verbose: Should be "less"
-decreased number of                                                          % Verbose: Should be "fewer"
-situations? in which                                                          % Verbose: Should be "when"
-small numbers? of                                                            % Verbose: Should be "a few"
-on an? \b[^ ]*\b basis                                                     % Verbose: Too many words (i.e. "on a monthly basis" -> "monthly")
-few in numbers?                                                              % Verbose: Should be "few"
-fewer in number                                                              % Verbose: Should be "fewer"
-for the reason that                                                         % Verbose: Should be "because"
-great deal of                                                                % Verbose: Should be "much"
-in a satisfactory manner                                                    % Verbose: Should be "satisfactorily"
-what is the explanation of                                                 % Verbose: Should be "why"
-will be significantly different                                             % Verbose: Should be "will differ significantly"
-within the realm of possibility                                            % Verbose: Should be "possible"
-amount of times?                                                             % Verbose: Should be "duration(s)"
-an example of this is the fact that                                     % Verbose: Should be "for example"
-are of the same opinions?                                                  % Verbose: Should be "agree"
-based on the facts?                                                         % Verbose: Should be "because"
-because of the facts?                                                       % Verbose: Should be "because"
-by means of                                                                  % Verbose: Should be "by" or "with"
+consensus of opinion                      % Verbose: Should be "consensus"
+considerable amount of                    % Verbose: Should be "much"
+considerable number of                    % Verbose: Should be "many"
+count the number of                       % Verbose: Should be "count"
+decreased amount of                       % Verbose: Should be "less"
+decreased number of                       % Verbose: Should be "fewer"
+situations? in which                      % Verbose: Should be "when"
+small numbers? of                         % Verbose: Should be "a few"
+on an? \b[^ ]*\b basis                    % Verbose: Too many words (i.e. "on a monthly basis" -> "monthly")
+few in numbers?                           % Verbose: Should be "few"
+fewer in number                           % Verbose: Should be "fewer"
+for the reason that                       % Verbose: Should be "because"
+great deal of                             % Verbose: Should be "much"
+in a satisfactory manner                  % Verbose: Should be "satisfactorily"
+what is the explanation of                % Verbose: Should be "why"
+will be significantly different           % Verbose: Should be "will differ significantly"
+within the realm of possibility           % Verbose: Should be "possible"
+amount of times?                          % Verbose: Should be "duration(s)"
+an example of this is the fact that       % Verbose: Should be "for example"
+are of the same opinions?                 % Verbose: Should be "agree"
+based on the facts?                       % Verbose: Should be "because"
+because of the facts?                     % Verbose: Should be "because"
+by means of                               % Verbose: Should be "by" or "with"
 
+# passive voice 
+it was found                            % Passive Voice: This should usually be avoided                                    
 
 # redundant
-up until                                                                      % Verbose: Should be "until"
-still remain                                                                  % Verbose: Should be "remain"
-reason why                                                                    % Verbose: Redundant
-definitely proved                                                             % Verbose: Should be "proved"
-different varieties                                                           % Verbose: Should be "varieties"
-enclosed herewith                                                             % Verbose: Should be "enclosed"
-entirely eliminate                                                            % Verbose: Should be "eliminate"
-eradicate completely                                                          % Verbose: Should be "eradicate"
-for \\(?:eg|e.g.)                                                             % Verbose: The 'for' is redundant
-grows? larger                                                                 % Verbose: Should be "grow(s)"
-whether or not                                                               % Verbose: Should be "whether"
-absolutely essential                                                           % Verbose: Should be "essential"
-completely surrounded                                                          % Verbose: Should be "surrounded"
-connected together                                                            % Verbose: Should be "connected"
-grouped together                                                              % Verbose: Should be "grouped"
-all of                                                                        % Verbose: Should be "all"
-and \\etc                                                                     % Verbose: 'Et' already means 'and'
+up until                                % Redundant: Should be "until"
+still remain                            % Redundant: Should be "remain"
+reason why                              % Redundant: Redundant
+definitely proved                       % Redundant: Should be "proved"
+different varieties                     % Redundant: Should be "varieties"
+enclosed herewith                       % Redundant: Should be "enclosed"
+entirely eliminate                      % Redundant: Should be "eliminate"
+eradicate completely                    % Redundant: Should be "eradicate"
+for \\(?:eg|e.g.)                       % Redundant: The 'for' is redundant
+grows? larger                           % Redundant: Should be "grow(s)"
+whether or not                          % Redundant: Should be "whether"
+absolutely essential                    % Redundant: Should be "essential"
+completely surrounded                   % Redundant: Should be "surrounded"
+connected together                      % Redundant: Should be "connected"
+grouped together                        % Redundant: Should be "grouped"
+all of                                  % Redundant: Should be "all"
+and \\etc                               % Redundant: 'Et' already means 'and'
 
 
 # unnecessary
-that being aid                              % Verbose: Should be removed
-in fact                                     % Verbose: Should rarely be used
-clearly                                     % Verbose: Should rarely be used
-
+that being aid                          % Unnecessary: Should be removed
+in fact                                 % Unnecessary: Should rarely be used
+clearly                                 % Unnecessary: Should rarely be used
+course of the                           % Unnecessary: Can usually safely be removed

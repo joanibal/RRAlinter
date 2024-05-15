@@ -13,6 +13,8 @@ I'm                                                                             
 (?:you|we|they|what)'re                                                                     % Informal: remove Contraction 
 (?:he|she|it|that|who|what|where|when|why|how)'s                                            % Informal: remove Contraction 
 
+(?<!\.)\b\w+(?:\/\w+)\b(?!\.)                                             % Informal: use "or" instead for most cases
+
 # verb contractions
 (?:is|are|was|were|have|has|had|wo|would|do|does|did|ca|could|should|might|must)n't         % Informal: remove Contraction
 (?:would|should|could|might|must)'ve                                                        % Informal: remove Contraction

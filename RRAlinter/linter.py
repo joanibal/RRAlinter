@@ -21,7 +21,7 @@ def main():
     This is the entry point for the linter
     """
     parser = argparse.ArgumentParser(prog="RRAlint")
-    parser.add_argument("tex_file", help="Name of input .tex file")
+    parser.add_argument("file", help="Name of input .tex file")
     parser.add_argument(
         "--no-color", default=False, action="store_true", help="Disable color output"
     )
@@ -38,9 +38,21 @@ def main():
         help="Disables the suggestions",
     )
     args = parser.parse_args()
+    
+    
+    # if arg.file ends with .tex read
+    if args.file.endswith(".tex"):
+        file_lines = read_latex(args.file)
+        latex_syntax=True
+    elif args.file.endswith(".pdf"):
+        file_lines = read_pdf(args.file)
+        latex_syntax=False
+    else:
+        raise NotImplementedError(f"File type of {args.file} not supported. Only .tex and .pdf are supported")
+
 
     # Read in the rules
-    rules_list, suggestions_list = read_rules()
+    rules_list, suggestions_list = read_rules(latex_syntax=False)
     rules, ignored_commands = parse_rules(rules_list)
     suggestions, ignored_commands = parse_rules(suggestions_list)
 
@@ -53,10 +65,8 @@ def main():
 
     command_regex = compile_command(ignored_commands)
 
-    latex_lines = read_latex(args.tex_file)
-
     errors, warnings = process_files(
-        latex_lines,
+        file_lines,
         rules,
         suggestions,
         command_regex,
@@ -105,7 +115,7 @@ def get_all_files(directory: str) -> List[str]:
     )
 
 
-def read_rules() -> List[str]:
+def read_rules(latex_syntax=True) -> List[str]:
     """
     Searches the command line arguments for a rule-set and defaults to the user rule-set if none is given.
     Reads all rules and returns a set of rules to be processed.
@@ -122,6 +132,12 @@ def read_rules() -> List[str]:
     )
 
     rule_set_files = get_all_files(rules_dir)
+    if not latex_syntax:
+        # remove syntax.txt
+        rule_set_files.remove(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "rules/syntax.txt")
+        )
+    
     suggestions_set_files = get_all_files(suggestions_dir)
 
     rules_list = []
@@ -239,6 +255,55 @@ def read_latex(file_name) -> Dict[str, List[str]]:
 
     return file_lines
 
+def read_pdf (file_name) -> Dict[str, List[str]]:
+    """
+    Reads all files given to the command arguments,
+    reads their contents, and returns a dictionary of the file names mapped onto lines from that file as a list
+    """
+    # Open the PDF file
+    try:
+        import fitz
+    except ImportError:
+        print("Please install the fitz library to read PDF files. pip install pymupdf")
+        sys.exit()
+    
+    document = fitz.open(file_name)
+    text = ''
+    # Iterate through all the pages
+    for page_num in range(document.page_count):
+        # Get a page object
+        page = document.load_page(page_num)
+        # Extract text from the page
+        
+        page_text = page.get_text()
+        page_text = page_text.replace('\n',' ')
+        text += page_text
+    
+    # Process the text into a list of sentences
+
+    # Process the sentences to rejoin parts that match the exceptions
+    # Split text based on sentence-ending punctuation
+    raw_sentences = re.split(r'(?<=[.!?])\s+', text)
+
+    # Define exceptions that shouldn't be split
+    exceptions = ['et al.', 'Fig.', 'w.r.t.', 's.t.']
+    exceptions = ['Fig.']
+
+    # Process the sentences to rejoin parts that match the exceptions
+    sentences = []
+    temp_sentence = raw_sentences[0]
+    for i in range(1, len(raw_sentences)):
+        if any(temp_sentence.endswith(exception) for exception in exceptions):
+            temp_sentence += ' ' + raw_sentences[i]
+        else:
+            sentences.append(temp_sentence)
+            temp_sentence = raw_sentences[i]
+    sentences.append(temp_sentence)  # Append the last sentence
+
+    file_lines = {file_name: sentences}
+    return file_lines
+    
+    
 
 def test_line(
     line_to_test: str, rule_patterns: Dict[Pattern, str]
@@ -363,8 +428,8 @@ def process_files(
                 #                 (file_name, error_line, error_beg+1, full_error_str, rule_patterns[rule_broken]))
                 error_list.append(
                     f"  {file_name}"
-                    + format_length
-                    + f"{error_line}:{error_beg+1:0d} ({full_error_str}) - {rule_patterns[rule_broken]}"
+                    # + format_length
+                    + f":{error_line}:{error_beg+1:0d} ({full_error_str}) - {rule_patterns[rule_broken]}"
                 )
                 # rules_broken_list = rules_broken.get(error_line, [])
                 # if rules_broken_list:

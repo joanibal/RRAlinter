@@ -1,12 +1,17 @@
 ## field specific terms
-aero-structural                                                            % Spelling: Its aerostructural 
-aero-propulsive                                                            % Spelling: Its aeropropulsive 
-aero-thermal                                                               % Spelling: Its aerothermal 
+aero-structural         % Spelling: Its aerostructural 
+aero-propulsive         % Spelling: Its aeropropulsive 
+aero-thermal            % Spelling: Its aerothermal 
 
 ## common misspellings
-foot print                                                                 % Spelling: Should be footprint
-develope                                                                   % Spelling: Should be develop
-further\smore                                                                  % Phrasing: Should be "furthermore"
+foot print              % Spelling: Should be footprint
+develope                % Spelling: Should be develop
+further\smore           % Spelling: Should be "furthermore"
 
+## Typos
+\shte\s                     % Typo: Should be "the"
+contraint               % Typo: Should be "constraint"
 
-e-mail                                                                         % Phrasing: Should be "email"
+## Hypen rules
+e-mail                  % Spelling: Should be "email"
+re-arrange              % Spelling: Should be "rearrange"
